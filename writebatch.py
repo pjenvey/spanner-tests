@@ -3,20 +3,24 @@ import sys
 import uuid
 from datetime import datetime, timedelta
 
+from google.api_core.exceptions import AlreadyExists
 from google.cloud import spanner
 from google.cloud.spanner_v1 import param_types
 
 INSTANCE = "spanner-test"
 DB = "sync"
-DB = "sync-orig"
 
 BATCHES = 8
 BATCH_SIZE = 1000
 
+BATCHES = 1
+BATCH_SIZE = 100
+
 #BATCHES = 1
 #BATCH_SIZE = 1
 
-USERID = '%s:%s' % (uuid.uuid4(), uuid.uuid4())
+#USERID = '%s:%s' % (uuid.uuid4(), uuid.uuid4())
+USERID = "475bbf0d-17a2-4f7b-ab8e-92d48cba7e1b"
 COLL = 100
 
 def load(instance, db):
@@ -43,9 +47,12 @@ def load(instance, db):
                 last_modified=param_types.TIMESTAMP
             )
         )
-        
-    db.run_in_transaction(create_user)
-    print('Created user %s' % USERID)
+
+    try:
+        db.run_in_transaction(create_user)
+        print('Created user %s' % USERID)
+    except AlreadyExists:
+        print('Existing user %s' % USERID)
 
     # approximately 1892 bytes
     rlen = 0

@@ -11,10 +11,13 @@ DB = "sync"
 USERID = "475bbf0d-17a2-4f7b-ab8e-92d48cba7e1b"
 COLL = 100
 MODIFIED = "2019-03-11T12:30:00.45Z"
+# returns 100 latest
+MODIFIED = "2019-04-19T10:19:56.0Z"
 # %f isn't right: spanner's nanoseconds, not microseconds
 FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 INCLUDE_TTL_IN_BSOLM = False
+INCLUDE_TTL_IN_BSOLM = True
 
 def query(instance, db):
     spanner_client = spanner.Client()
